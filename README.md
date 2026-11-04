@@ -1,10 +1,10 @@
-# Mi configuración de Neovim (NvChad)
+# ⚡ Mi configuración de Neovim (NvChad)
 
 Configuración personal sobre [NvChad](https://github.com/NvChad/NvChad) v2.5, que se usa como plugin (`NvChad/NvChad` + `import = "nvchad.plugins"`). Tema `ayu_light` con transparencia.
 
-> La config anterior (vim-plug / `init.vim`, 2022) se conserva en la rama [`backup-vim-plug`](../../tree/backup-vim-plug).
+> 📦 La config anterior (vim-plug / `init.vim`, 2022) se conserva en la rama [`backup-vim-plug`](../../tree/backup-vim-plug).
 
-## Instalación
+## 🚀 Instalación
 
 Requisitos: Neovim ≥ 0.11, `git`, un [Nerd Font](https://www.nerdfonts.com/) y, para la integración con Claude, el CLI [`claude`](https://claude.com/claude-code) en el `PATH`.
 
@@ -22,7 +22,7 @@ Dentro de Neovim:
 2. `:MasonToolsUpdate` instala LSP y formateadores.
 3. `:lua require('base46').load_all_highlights()` regenera el tema si ves colores raros.
 
-## Estructura
+## 🗂️ Estructura
 
 | Archivo | Contenido |
 |---|---|
@@ -38,7 +38,7 @@ Dentro de Neovim:
 | `lua/configs/lists.lua` | Opciones compartidas de listas y `dd` que renumera |
 | `after/ftplugin/{markdown,text}.lua` | Aplican `configs.lists` tras el ftplugin nativo |
 
-## Plugins añadidos
+## 🔌 Plugins añadidos
 
 - [claudecode.nvim](https://github.com/coder/claudecode.nvim): Claude Code en un panel a la izquierda.
 - [opencode.nvim](https://github.com/NickvanDyke/opencode.nvim) y [snacks.nvim](https://github.com/folke/snacks.nvim).
@@ -50,7 +50,7 @@ Dentro de Neovim:
 - [mason-tool-installer.nvim](https://github.com/WhoIsSethDaniel/mason-tool-installer.nvim): instala LSP y formateadores.
 - [nvim-tree](https://github.com/nvim-tree/nvim-tree.lua) a la derecha y treesitter en la rama `master`.
 
-## LSP y formateadores
+## 🛠️ LSP y formateadores
 
 | Lenguaje | LSP | Formateador |
 |---|---|---|
@@ -60,11 +60,11 @@ Dentro de Neovim:
 | LaTeX | `texlab` | `latexindent` |
 | Lua | (NvChad) | `stylua` |
 
-## Atajos
+## ⌨️ Atajos
 
 `<leader>` es la barra espaciadora.
 
-### Claude Code (`<leader>c`)
+### 🤖 Claude Code (`<leader>c`)
 
 | Tecla | Modo | Acción |
 |---|---|---|
@@ -81,7 +81,7 @@ Dentro de Neovim:
 
 Para moverte entre Claude y el editor: `Ctrl-x` sale del modo terminal, `Ctrl-h` / `Ctrl-l` cambian de ventana e `i` vuelve a escribir en Claude.
 
-### Generales
+### 🎯 Generales
 
 | Tecla | Modo | Acción |
 |---|---|---|
@@ -89,7 +89,7 @@ Para moverte entre Claude y el editor: `Ctrl-x` sale del modo terminal, `Ctrl-h`
 | `jk` | i | Salir a modo normal |
 | `zj` / `zk` | n | Añadir línea vacía debajo / encima sin mover el cursor |
 
-### Multi-cursor
+### ✏️ Multi-cursor
 
 | Tecla | Modo | Acción |
 |---|---|---|
@@ -101,7 +101,7 @@ Para moverte entre Claude y el editor: `Ctrl-x` sale del modo terminal, `Ctrl-h`
 | `<leader>d` / `<leader>D` | n, x | Añadir y saltar / solo saltar a la siguiente coincidencia |
 | `<leader>l` | n, x | Bloquear los cursores virtuales |
 
-### opencode (`<leader>o`)
+### 🧠 opencode (`<leader>o`)
 
 | Tecla | Modo | Acción |
 |---|---|---|
@@ -114,7 +114,7 @@ Para moverte entre Claude y el editor: `Ctrl-x` sale del modo terminal, `Ctrl-h`
 | `<leader>oe` | n | Explicar el código bajo el cursor |
 | `Ctrl-Shift-u` / `Ctrl-Shift-d` | n | Subir / bajar media página en los mensajes |
 
-### Windsurf (insert)
+### 🌊 Windsurf (insert)
 
 | Tecla | Acción |
 |---|---|
@@ -122,13 +122,13 @@ Para moverte entre Claude y el editor: `Ctrl-x` sale del modo terminal, `Ctrl-h`
 | `Ctrl-;` / `Ctrl-,` | Siguiente / anterior sugerencia |
 | `Ctrl-x` | Descartar sugerencia |
 
-### Listas (markdown y `.txt`)
+### 📝 Listas (markdown y `.txt`)
 
 - `Enter` sobre una viñeta vacía termina la lista.
 - `>>` / `<<` o `Ctrl-t` / `Ctrl-d` cambian el nivel (`1.` → `a.` → `i.` → `-`).
 - `dd` borra la línea y renumera la lista.
 - `gN` renumera manualmente.
 
-## Créditos
+## 🙏 Créditos
 
 - [NvChad](https://github.com/NvChad/NvChad) y su [starter](https://github.com/NvChad/starter), que es el punto de partida de este repo (remoto `upstream`).

@@ -35,6 +35,33 @@ M.ui = {
   statusline = {
     overriden_modules = nil,
     separator_style = "round",
+    -- Same as NvChad's default `mode` and `cursor` modules, plus a rounded
+    -- cap on the outer edge of the bar (like the tmux status bar).
+    modules = {
+      mode = function()
+        local utils = require "nvchad.stl.utils"
+        if not utils.is_activewin() then
+          return ""
+        end
+
+        local m = utils.modes[vim.api.nvim_get_mode().mode]
+        local mode_hl = "St_" .. m[2] .. "Mode"
+        local cap_hl = "St_" .. m[2] .. "ModeCapL"
+        vim.api.nvim_set_hl(0, cap_hl, { fg = vim.api.nvim_get_hl(0, { name = mode_hl, link = false }).bg })
+
+        return "%#" .. cap_hl .. "#\u{e0b6}" -- left cap
+          .. "%#" .. mode_hl .. "#\u{e7c5} " .. m[1]
+          .. "%#St_" .. m[2] .. "ModeSep#\u{e0b4}"
+          .. "%#ST_EmptySpace#\u{e0b4}"
+      end,
+
+      cursor = function()
+        vim.api.nvim_set_hl(0, "St_pos_capR", {
+          fg = vim.api.nvim_get_hl(0, { name = "St_pos_text", link = false }).bg,
+        })
+        return "%#St_pos_sep#\u{e0b6}%#St_pos_icon#\u{e612} %#St_pos_text# %l/%v %#St_pos_capR#\u{e0b4}"
+      end,
+    },
   },
 }
 

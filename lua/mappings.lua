@@ -15,8 +15,48 @@ map("n", "zk", "O<ESC>j")
 -- Multiple cursors
 map({ "n", "x" }, "<C-j>", "<Cmd>MultipleCursorsAddDown<CR>", { desc = "Add cursor and move down" })
 map({ "n", "x" }, "<C-k>", "<Cmd>MultipleCursorsAddUp<CR>", { desc = "Add cursor and move up" })
-map({ "n", "i", "x" }, "<C-Up>", "<Cmd>MultipleCursorsAddUp<CR>", { desc = "Add cursor and move up" })
-map({ "n", "i", "x" }, "<C-Down>", "<Cmd>MultipleCursorsAddDown<CR>", { desc = "Add cursor and move down" })
+map({ "i", "x" }, "<C-Up>", "<Cmd>MultipleCursorsAddUp<CR>", { desc = "Add cursor and move up" })
+map({ "i", "x" }, "<C-Down>", "<Cmd>MultipleCursorsAddDown<CR>", { desc = "Add cursor and move down" })
+
+-- Window resize (Ctrl + arrows, no plugins)
+-- Ctrl+arrow: the current window expands towards that side (takes space from the
+-- neighbour there). Ctrl+Shift+arrow: that side retracts (gives space back).
+-- Errors are appended to stdpath("state")/winresize.log (copy-friendly) as well as notified.
+local function safe_resize(fn_name, d)
+  return function()
+    local ok, err = xpcall(function()
+      require("winresize")[fn_name](d, 2)
+    end, debug.traceback)
+    if not ok then
+      local wins = {}
+      for _, w in ipairs(vim.api.nvim_tabpage_list_wins(0)) do
+        local b = vim.api.nvim_win_get_buf(w)
+        wins[#wins + 1] = string.format(
+          "%d[ft=%s bt=%s rel=%s w=%d h=%d]",
+          w,
+          vim.bo[b].filetype,
+          vim.bo[b].buftype,
+          vim.api.nvim_win_get_config(w).relative,
+          vim.api.nvim_win_get_width(w),
+          vim.api.nvim_win_get_height(w)
+        )
+      end
+      local f = io.open(vim.fn.stdpath "state" .. "/winresize.log", "a")
+      if f then
+        f:write(os.date "%F %T", " ", fn_name, " ", d, "\n", tostring(err), "\nwindows: ", table.concat(wins, " "), "\n\n")
+        f:close()
+      end
+      vim.notify("winresize error (see " .. vim.fn.stdpath "state" .. "/winresize.log)", vim.log.levels.ERROR)
+    end
+  end
+end
+
+for _, dir in ipairs { "Up", "Down", "Left", "Right" } do
+  local d = dir:lower()
+  map("n", "<C-" .. dir .. ">", safe_resize("grow", d), { desc = "Expand window " .. d })
+  map("n", "<C-S-" .. dir .. ">", safe_resize("shrink", d), { desc = "Shrink window from " .. d })
+end
+
 map({ "n", "i" }, "<C-LeftMouse>", "<Cmd>MultipleCursorsMouseAddDelete<CR>", { desc = "Add or remove cursor" })
 map("x", "<Leader>m", "<Cmd>MultipleCursorsAddVisualArea<CR>", { desc = "Add cursors to the lines of the visual area" })
 map({ "n", "x" }, "<Leader>a", "<Cmd>MultipleCursorsAddMatches<CR>", { desc = "Add cursors to cword" })

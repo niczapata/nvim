@@ -29,7 +29,8 @@ Dentro de Neovim:
 | `init.lua` | Bootstrap de lazy.nvim e import de NvChad y `plugins/` |
 | `lua/chadrc.lua` | Tema, tabufline y statusline con extremos redondeados |
 | `lua/options.lua` | Opciones: portapapeles, wrap, cursor, `.txt` como markdown |
-| `lua/mappings.lua` | Atajos propios (multi-cursor, opencode, windsurf) |
+| `lua/mappings.lua` | Atajos propios (multi-cursor, redimensionar ventanas, opencode, windsurf) |
+| `lua/winresize.lua` | Lógica de redimensionado direccional de ventanas (sin plugins) |
 | `lua/plugins/init.lua` | Plugins generales |
 | `lua/plugins/claudecode.lua` | Integración con Claude Code |
 | `lua/plugins/bullets.lua` | Listas estilo Word en markdown y texto |
@@ -89,12 +90,27 @@ Para moverte entre Claude y el editor: `Ctrl-x` sale del modo terminal, `Ctrl-h`
 | `jk` | i | Salir a modo normal |
 | `zj` / `zk` | n | Añadir línea vacía debajo / encima sin mover el cursor |
 
+### 🪟 Redimensionar ventanas
+
+La flecha indica hacia qué lado se mueve la ventana **actual**; la vecina de ese lado cede (o recupera) el espacio. Funciona con tres o más ventanas y con ventanas de ancho fijo como nvim-tree. Si no hay vecina de ese lado, no hace nada. Cada pulsación mueve 2 columnas o líneas (se cambia en `lua/mappings.lua`).
+
+| Tecla | Modo | Acción |
+|---|---|---|
+| `Ctrl-←` / `Ctrl-→` | n | Expandir la ventana hacia la izquierda / derecha |
+| `Ctrl-↑` / `Ctrl-↓` | n | Expandir la ventana hacia arriba / abajo |
+| `Ctrl-Shift-←` / `→` / `↑` / `↓` | n | Retraer ese lado de la ventana y devolver el espacio a la vecina |
+
+- `Ctrl-Shift-flecha` solo funciona si la terminal distingue esa combinación.
+- Si ocurre un error, se avisa con una notificación y se guarda con su traza y la lista de ventanas en `~/.local/state/nvim/winresize.log`.
+- Para recargar cambios de `lua/winresize.lua` sin reiniciar: `:lua package.loaded.winresize = nil`.
+- `Alt-h` / `Alt-v` / `Alt-i` ya los usa NvChad para sus terminales, por eso se usa `Ctrl` y no `Alt`.
+
 ### ✏️ Multi-cursor
 
 | Tecla | Modo | Acción |
 |---|---|---|
 | `Ctrl-j` / `Ctrl-k` | n, x | Añadir cursor abajo / arriba |
-| `Ctrl-↑` / `Ctrl-↓` | n, i, x | Añadir cursor arriba / abajo |
+| `Ctrl-↑` / `Ctrl-↓` | i, x | Añadir cursor arriba / abajo (en modo normal esas teclas redimensionan ventanas, ver abajo) |
 | `Ctrl-clic` | n, i | Añadir o quitar cursor |
 | `<leader>m` | x | Cursores en las líneas de la selección |
 | `<leader>a` / `<leader>A` | n, x | Cursores en la palabra / en el área previa |
